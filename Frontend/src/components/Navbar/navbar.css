@@ -3,7 +3,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 10px 20px;
-  background-color: #333; /* Dark background for navbar */
+  background-color: #545454; /* Dark background for navbar */
   color: #fff; /* White text */
 }
 
@@ -12,10 +12,10 @@
   align-items: center;
 }
 
-.logo img {
-  height: 40px;
-  margin-right: 10px; /* Space between logo and company name */
-}
+/* .logo img {
+  /* height: 40px; */
+  /* margin-right: 10px; Space between logo and company name */
+
 
 .company {
   font-size: 1.5rem;

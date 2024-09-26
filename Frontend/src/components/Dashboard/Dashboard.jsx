@@ -1,8 +1,14 @@
 import React from 'react';
 import './Dashboard.css';
 import AuthNavbar from '../Authorized-Navbar/AuthorizedNav';
+// import { useParams } from 'react-router-dom';
+import Images from '../../assets';
 
 const Dashboard = () => {
+
+// const {id} = useParams();
+// console.log(id);
+
   return (
     <>
     <AuthNavbar />
@@ -46,7 +52,7 @@ const Dashboard = () => {
 
         <div className="dashboard-chart">
           <h3>Device Data</h3>
-          <img src="graph.png" alt="Device Chart" />
+          <img src={Images.graph} alt="Device Chart" />
         </div>
       </div>
     </div>

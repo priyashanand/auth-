@@ -2,13 +2,17 @@ import React from 'react';
 import './navbar.css';
 import { Link } from 'react-router-dom';
 
+
+import Images from '../../assets';
+
 const Navbar = () => {
+
   return (
     <>
       <div className='navbar'>
         <div className='logo'>
           <img 
-            src='xtrans_logo.webp'
+            src={Images.logo}
             alt='XTrans Logo' 
           />
           <span className='company'>Xtrans Solutions</span>

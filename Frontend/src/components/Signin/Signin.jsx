@@ -1,60 +1,17 @@
-// import React, { useState } from 'react';
-// import './signin.css';
-// import Navbar from '../Navbar/Navbar';
-
-// function SignIn() {
-
-//   return (
-//      <> 
-//       <Navbar />
-//       <div className="sign-in-container">
-//         <h2>Sign In to XTrans</h2>
-//         <form className="sign-in-form">
-//           <div className="sign-in-form-group">
-//             <label htmlFor="email">Email</label>
-//             <input type="email" id="email" placeholder="Enter your email" />
-//           </div>
-//           <div className="sign-in-form-group">
-//             <label htmlFor="password">Password</label>
-//             <input type="password" id="password" placeholder="Enter your password" />
-//           </div>
-//           <button type="submit" className="sign-in-btn-primary">Sign In</button>
-//         </form>
-//         <p>
-//           <a href="/forgot-password" className="sign-in-forgot-password-link">Forgot Password?</a>
-//         </p>
-//         <p>
-//           Don't have an account? <a href="/signup" className="sign-in-sign-up-link">Sign Up</a>
-//         </p>
-//       </div>
-//     </>
-//   );
-// }
-
-// export default SignIn;
-
-
-
-
-
-
-
-
-
-
-
-
-
 import React, { useState } from 'react';
 import './signin.css';
 import Navbar from '../Navbar/Navbar';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import AlertModal from '../Alert/Alert';
 
 function SignIn() {
   const [responseMessage, setResponseMessage] = useState('');
   const server = "http://localhost:4001/";
+  const navigate = useNavigate();
+  const [showAlert, setShowAlert] = useState(false); // Control alert visibility
 
   // Validation schema using Yup
   const validationSchema = Yup.object({
@@ -64,17 +21,28 @@ function SignIn() {
 
   // Handle form submission
   const handleSubmit = async (values, { setSubmitting }) => {
-    console.log(values);
+    // console.log(values);
     try {
       const response = await axios.post(`${server}api/auth/login`, values); // Change the endpoint as necessary
-      console.log(response);
+      // console.log(response);
       setResponseMessage(response.data.message);
       // Save response data if needed, e.g., tokens
+
+      setShowAlert(true);
+      if (response.data.status === 'success') {  // Assuming your API responds with a success flag
+        setTimeout(() => {
+          navigate(`/dashboard/${response.data.user.username}`,); // Redirect to the login page after a delay
+        }, 2000); // 2-second delay for better UX
+      }
     } catch (error) {
       setResponseMessage(error.response ? error.response.data.message : 'Something went wrong');
     } finally {
       setSubmitting(false);
     }
+  };
+
+  const handleCloseAlert = () => {
+    setShowAlert(false); // Close the alert modal
   };
 
   return (
@@ -112,6 +80,9 @@ function SignIn() {
         <p>
           Don't have an account? <a href="/signup" className="sign-in-sign-up-link">Sign Up</a>
         </p>
+        {showAlert && (
+          <AlertModal message={responseMessage} onClose={handleCloseAlert} />
+        )}
       </div>
     </>
   );

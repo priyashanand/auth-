@@ -4,10 +4,14 @@ import Navbar from '../Navbar/Navbar';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import AlertModal from '../Alert/Alert';
 
 function SignUp() {
   const [responseMessage, setResponseMessage] = useState('');
   const server = "http://localhost:4001/";
+  const navigate = useNavigate();
+  const [showAlert, setShowAlert] = useState(false); // Control alert visibility
 
   // Yup validation schema
   const validationSchema = Yup.object({
@@ -22,20 +26,25 @@ function SignUp() {
   // Handle form submission
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
-    //   const response = await axios.post('/api/auth/signup', {
-    //     username: values.username,
-    //     email: values.email,
-    //     password: values.password,
-    //   });
-    const response = await axios.post(`${server}api/auth/signup`, values);
-    //   console.log(response);
-
+      const response = await axios.post(`${server}api/auth/signup`, values);
       setResponseMessage(response.data.message); // Handle success response
+      setShowAlert(true); // Show the alert modal
+
+      if (response.data.status === 'success') {  // Assuming your API responds with a success flag
+        setTimeout(() => {
+          navigate("/signin"); // Redirect to the login page after a delay
+        }, 2000); // 2-second delay for better UX
+      }
     } catch (error) {
       setResponseMessage(error.response ? error.response.data.message : 'Something went wrong'); // Handle error response
+      setShowAlert(true); // Show the alert modal
     } finally {
       setSubmitting(false);
     }
+  };
+
+  const handleCloseAlert = () => {
+    setShowAlert(false); // Close the alert modal
   };
 
   return (
@@ -76,7 +85,9 @@ function SignUp() {
             </Form>
           )}
         </Formik>
-        {responseMessage && <p className="response-message">{responseMessage}</p>}
+        {showAlert && (
+          <AlertModal message={responseMessage} onClose={handleCloseAlert} />
+        )}
       </div>
     </>
   );

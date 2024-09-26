@@ -2,13 +2,16 @@ import React from 'react';
 import './AuthorizedNav.css';
 import { Link } from 'react-router-dom';
 
+
+import Images from '../../assets';
+
 const AuthNavbar = () => {
   return (
     <>
       <div className='navbar'>
         <div className='logo'>
           <img 
-            src='../Navbar/xtrans_logo.webp'
+            src={Images.logo}
             alt='XTrans Logo' 
           />
           <span className='company'>Xtrans Solutions</span>
