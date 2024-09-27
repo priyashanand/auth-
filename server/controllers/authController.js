@@ -2,6 +2,9 @@ const User = require('../models/userModel')
 const jwt = require('jsonwebtoken')
 const createError = require('../utils/appError')
 const bcrypt = require('bcrypt')
+const uuid = require('uuid')
+
+let uniqueId = 1
 
 exports.signup = async (req, res, next) => {
     try{
@@ -11,9 +14,12 @@ exports.signup = async (req, res, next) => {
             return next(new createError('User already exists', 400))
         }
         const hashedPassword = await bcrypt.hash(req.body.password, 12)
+        const apikey = uuid.v4()
 
         const newUser = await User.create({
             ...req.body,
+            // uid: uniqueId,
+            uuid: apikey,
             password: hashedPassword,
         })
 
@@ -29,8 +35,9 @@ exports.signup = async (req, res, next) => {
                 _id: newUser._id,
                 name: newUser.name,
                 email: newUser.email,
-                role: newUser.role
-
+                role: newUser.role,
+                uuid: newUser.uuid,
+                // uid: newUser.uid
             }
         })
 
@@ -62,8 +69,9 @@ exports.login = async (req, res, next) => {
                 _id: user._id,
                 name: user.name,
                 email: user.email,
-                role: user.role
-
+                role: user.role,
+                uuid: user.uuid,
+                // uid: uniqueId
             }
 
         });

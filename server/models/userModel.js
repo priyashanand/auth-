@@ -12,12 +12,19 @@ const userSchema = new mongoose.Schema({
     },
     role: {
         type: String,
-        defaule: "user",
+        default: "user",
     },
     password: {
         type: String,
         required: true,
-    }
+    },
+    uuid: {
+        type: String,
+        unique: true,
+    },
+    // iotTempData:{
+    //     type: Array,
+    // }
 })
 
 const User = mongoose.model('User', userSchema)
