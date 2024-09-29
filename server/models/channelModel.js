@@ -1,5 +1,13 @@
 const mongoose = require('mongoose');
 
+const entrySchema = new mongoose.Schema({
+    fieldData: [{
+        name: String, // Field name like 'temperature'
+        value: mongoose.Schema.Types.Mixed // Field value like 25.3
+    }],
+    timestamp: { type: Date, default: Date.now }
+});
+
 const channelSchema = new mongoose.Schema({
   name: { 
     type: String, 
@@ -21,10 +29,7 @@ const channelSchema = new mongoose.Schema({
         name: String, 
         type: String 
     }],
-    apiKey: { 
-        type: String, 
-        required: true 
-    }
+    entries: [entrySchema]
 });
 
 module.exports = mongoose.model('Channel', channelSchema);

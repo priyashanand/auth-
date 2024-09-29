@@ -80,26 +80,26 @@ router.get('/channels', async (req, res) => {
   });
   
 
-router.post('/channels/:channelId/entries', async (req, res) => {
-    const { channelId } = req.params;
-    const data = req.body;
-    const channel = await Channel.findById(channelId);
+// router.post('/channels/:channelId/entries', async (req, res) => {
+//     const { channelId } = req.params;
+//     const data = req.body;
+//     const channel = await Channel.findById(channelId);
 
-    if (channel.apiKey !== req.header('x-api-key')) {
-    return res.status(401).json({ message: 'Invalid API key' });
-    }
+//     if (channel.apiKey !== req.header('x-api-key')) {
+//     return res.status(401).json({ message: 'Invalid API key' });
+//     }
 
-    const entry = new Entry({ channelId, data });
-    await entry.save();
+//     const entry = new Entry({ channelId, data });
+//     await entry.save();
 
-    res.status(201).json({ message: 'Entry added successfully' });
-});
+//     res.status(201).json({ message: 'Entry added successfully' });
+// });
 
-router.get('/channels/:channelId/entries', async (req, res) => {
-    const { channelId } = req.params;
-    const entries = await Entry.find({ channelId });
-    res.json(entries);
-});
+// router.get('/channels/:channelId/entries', async (req, res) => {
+//     const { channelId } = req.params;
+//     const entries = await Entry.find({ channelId });
+//     res.json(entries);
+// });
 
 
 module.exports = router
