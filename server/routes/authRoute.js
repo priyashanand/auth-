@@ -41,13 +41,11 @@ const authenticateJWT = (req, res, next) => {
 router.post('/channels', authenticateJWT, async (req, res) => {
     const { name, description, fields } = req.body;
 
-    // Check if required fields are present
     if (!name || !fields) {
         return res.status(400).json({ message: 'Channel name and fields are required' });
     }
 
     try {
-        // Extract the userId from the authenticated user (decoded JWT)
         const userId = req.user._id;
         const apiKey = uuidv4(); 
 
@@ -56,11 +54,10 @@ router.post('/channels', authenticateJWT, async (req, res) => {
             name,
             description,
             fields,
-            userId,  // Assign the user's ID to the channel
+            userId, 
             apiKey
         });
 
-        // Save the channel to the database
         await newChannel.save();
 
         res.status(201).json({
