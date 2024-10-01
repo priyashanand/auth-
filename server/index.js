@@ -40,8 +40,13 @@ app.get('/', (req,res)=>{
     res.send('<h1>This is my server home</h1>')
 })
 
+// mongoose
+//     .connect('mongodb://127.0.0.1:27017/authentication')
+//     .then(()=> console.log('Connected to mongodb'))
+//     .catch((error)=>console.error('Failed to connect : ', error))
+
 mongoose
-    .connect('mongodb://127.0.0.1:27017/authentication')
+    .connect('mongodb+srv://priyash:1234@cluster0.v3ifnq6.mongodb.net/authentication?retryWrites=true&w=majority&appName=Cluster0')
     .then(()=> console.log('Connected to mongodb'))
     .catch((error)=>console.error('Failed to connect : ', error))
 
