@@ -43,7 +43,7 @@ router.post('/channels/:channelId/entries', async (req, res) => {
 
         //console.log('Transformed fieldData:', newEntry.fieldData);
 
-        //channel.entries.push(newEntry);
+        channel.entries.push(newEntry);
         //console.log('Channel entries before saving:', channel.entries);
 
         await channel.save();
