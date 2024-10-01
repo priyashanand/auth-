@@ -8,9 +8,9 @@ router.post('/channels/:channelId/entries', async (req, res) => {
     const apiKey = req.header('x-api-key');  
     const { fieldData } = req.body;
 
-    console.log('channelId received:', channelId); 
-    console.log('Received fieldData:', fieldData);
-    console.log('apiKey:', apiKey);
+    //console.log('channelId received:', channelId); 
+    //console.log('Received fieldData:', fieldData);
+    //console.log('apiKey:', apiKey);
 
     try {
         const channel = await Channel.findById(channelId);
@@ -41,10 +41,10 @@ router.post('/channels/:channelId/entries', async (req, res) => {
             timestamp: new Date()
         };
 
-        console.log('Transformed fieldData:', newEntry.fieldData);
+        //console.log('Transformed fieldData:', newEntry.fieldData);
 
-        channel.entries.push(newEntry);
-        console.log('Channel entries before saving:', channel.entries);
+        //channel.entries.push(newEntry);
+        //console.log('Channel entries before saving:', channel.entries);
 
         await channel.save();
 
@@ -60,31 +60,52 @@ router.post('/channels/:channelId/entries', async (req, res) => {
 
 router.get('/channels/:channelId/entries', async (req, res) => {
     const { channelId } = req.params;
-    const { apiKey } = req.headers;  // API key sent in the header
+    const requestedFields = req.query.fields ? req.query.fields.split(',') : []; 
+
+    const apiKey = req.header('x-api-key');
+    const token = req.header('Authorization') ? req.header('Authorization') : null;
+    //console.log('Received token:', token);
+
+    if (!apiKey) {
+        return res.status(400).json({ message: 'API key is missing in the headers' });
+    }
+
+    if (!token) {
+        return res.status(401).json({ message: 'JWT token is missing in the headers' });
+    }
 
     try {
-        // Find the channel by its ID
         const channel = await Channel.findById(channelId);
-
+        
         if (!channel) {
             return res.status(404).json({ message: 'Channel not found' });
         }
 
-        // Validate the API key
-        if (channel.apiKey !== apiKey) {
-            return res.status(403).json({ message: 'Invalid API key' });
+        // If no fields are requested, return all entries
+        if (requestedFields.length === 0) {
+            return res.status(200).json({
+                message: 'Entries retrieved successfully',
+                entries: channel.entries
+            });
         }
 
-        // Get the entries
-        const entries = channel.entries;
+        // Filter the entries based on requested fields
+        const filteredEntries = channel.entries.map(entry => {
+            const filteredFieldData = entry.fieldData.filter(field => requestedFields.includes(field.name));
+            return {
+                timestamp: entry.timestamp,
+                fieldData: filteredFieldData
+            };
+        });
 
         res.status(200).json({
             message: 'Entries retrieved successfully',
-            entries
+            entries: filteredEntries
         });
     } catch (error) {
         res.status(500).json({ message: 'Failed to retrieve entries', error: error.message });
     }
 });
+
 
 module.exports = router;

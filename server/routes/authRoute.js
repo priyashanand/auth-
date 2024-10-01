@@ -1,6 +1,5 @@
 const express = require ('express')
 const authController = require('../controllers/authController')
-const Entry = require('../models/entryModel');
 const Channel = require('../models/channelModel');
 const jwt = require('jsonwebtoken');
 const { v4: uuidv4 } = require('uuid');
@@ -37,6 +36,7 @@ const authenticateJWT = (req, res, next) => {
       next();
     });
   };
+
 
 router.post('/channels', authenticateJWT, async (req, res) => {
     const { name, description, fields } = req.body;
