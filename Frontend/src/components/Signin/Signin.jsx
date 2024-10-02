@@ -23,18 +23,26 @@ function SignIn() {
   const handleSubmit = async (values, { setSubmitting }) => {
     // console.log(values);
     try {
+      // console.log(values);
       const response = await axios.post(`${server}api/auth/login`, values); // Change the endpoint as necessary
-      // console.log(response);
+      // console.log(response)
       setResponseMessage(response.data.message);
       // Save response data if needed, e.g., tokens
-
+      // console.log(response)
       setShowAlert(true);
       if (response.data.status === 'success') {  // Assuming your API responds with a success flag
         setTimeout(() => {
-          navigate(`/dashboard/${response.data.user.username}`,); // Redirect to the login page after a delay
+          console.log(response);
+          localStorage.setItem('token',response.data.token)
+          // Example of setting token and API key after login
+          // localStorage.setItem('apiKey', response.data.apiKey); // Channel-specific API key
+
+          // navigate(`/dashboard/${response.data.user.name}`,); // Redirect to the login page after a delay
+          navigate('/landing');
         }, 2000); // 2-second delay for better UX
       }
     } catch (error) {
+      // console.log(error.response);
       setResponseMessage(error.response ? error.response.data.message : 'Something went wrong');
     } finally {
       setSubmitting(false);

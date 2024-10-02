@@ -2,12 +2,13 @@ import React from 'react';
 import './App.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './components/home/Home';
-// import Documentation from './components/documentation/Documentation';
-// import Support from './components/support/Support';
-// import SignIn from './components/signin/SignIn';
 import SignIn from './components/Signin/Signin';
 import SignUp from './components/Signup/Signup';
-import Dashboard from './components/Dashboard/Dashboard';
+import ChannelDashboard from './components/NewDashboard/NewDashboard';
+import LandingPage from './components/LandingPage/LandingPage';
+import CreateChannelForm from './components/CreateChannelForm/CreateChannelForm';
+import ChannelEntriesForm from './components/ChannelEntriesForm/ChannelEntriesForm';
+import CheckChannel from './components/CheckChannel/CheckChannel';
 
 function App() {
   return (
@@ -17,7 +18,12 @@ function App() {
           <Route path='/' element={<Home />} />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
-          <Route path="/dashboard/:id" element={<Dashboard/>} />
+          <Route path="/landing" element={<LandingPage />} />
+          <Route path="/create-channel" element={<CreateChannelForm />} />
+          <Route path="/dashboard/:id" element={<ChannelDashboard />} />
+          <Route path="/channels/:channelId/entries" element={<ChannelEntriesForm />} /> {/* New route for entries */}
+          <Route path="/check-channel" element={<CheckChannel/>} />
+          {/* <Route path="/data-entry" element={<ChannelEntriesForm />} /> */}
         </Routes>
       </Router>
     </>

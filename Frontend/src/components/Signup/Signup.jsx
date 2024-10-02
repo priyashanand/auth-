@@ -15,7 +15,7 @@ function SignUp() {
 
   // Yup validation schema
   const validationSchema = Yup.object({
-    username: Yup.string().required('Username is required'),
+    name: Yup.string().required('Username is required'),
     email: Yup.string().email('Invalid email format').required('Email is required'),
     password: Yup.string().min(6, 'Password must be at least 6 characters').required('Password is required'),
     confirmPassword: Yup.string()
@@ -53,16 +53,16 @@ function SignUp() {
       <div className="sign-up-container">
         <h2>Sign Up to XTrans Cloud</h2>
         <Formik
-          initialValues={{ username: '', email: '', password: '', confirmPassword: '' }}
+          initialValues={{ name: '', email: '', password: '', confirmPassword: '' }}
           validationSchema={validationSchema}
           onSubmit={handleSubmit}
         >
           {({ isSubmitting }) => (
             <Form className="sign-up-form">
               <div className="sign-up-form-group">
-                <label htmlFor="username">Username</label>
-                <Field type="text" id="username" name="username" placeholder="Enter Username" />
-                <ErrorMessage name="username" component="div" className="error-message" />
+                <label htmlFor="name">Username</label>
+                <Field type="text" id="name" name="name" placeholder="Enter Username" />
+                <ErrorMessage name="name" component="div" className="error-message" />
               </div>
               <div className="sign-up-form-group">
                 <label htmlFor="email">Email</label>
