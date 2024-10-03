@@ -4,6 +4,7 @@ const cors = require('cors')
 const authRouter = require('./routes/authRoute')
 const dataRouter = require('./routes/dataRoute')
 const jwt = require('jsonwebtoken');
+const Channel = require('./models/channelModel');
 
 const app = express()
 const port = 4001
@@ -32,8 +33,8 @@ const authenticateJWT = (req, res, next) => {
 };
 
 // Apply to routes
-app.use('/api', authenticateJWT, authRouter);
-app.use('/api', dataRouter)
+app.use('/api/auth', authenticateJWT, authRouter);
+// app.use('/api', dataRouter)
 
 const addEntryToChannel = async (channelId, fieldData, res) => {
     try {
@@ -82,7 +83,7 @@ app.route('/api/channels/:channelId/entries')
     })
     .get(async (req, res) => {
         const { channelId } = req.params;
-        console.log(req.query);
+        // console.log(req.query);
         const fieldData = req.query; // Expecting data in query parameters
         await addEntryToChannel(channelId, fieldData, res);
     });
@@ -95,6 +96,11 @@ mongoose
     .connect('mongodb://127.0.0.1:27017/authentication')
     .then(()=> console.log('Connected to mongodb'))
     .catch((error)=>console.error('Failed to connect : ', error))
+
+// mongoose
+//     .connect('mongodb+srv://priyash:1234@cluster0.v3ifnq6.mongodb.net/authentication?retryWrites=true&w=majority&appName=Cluster0')
+//     .then(()=> console.log('Connected to mongodb'))
+//     .catch((error)=>console.error('Failed to connect : ', error))
 
 app.use((err, req, res, next)=>{
     err.statuCode = err.statuCode || 500

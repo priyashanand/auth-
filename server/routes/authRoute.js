@@ -1,6 +1,5 @@
 const express = require ('express')
 const authController = require('../controllers/authController')
-const Entry = require('../models/entryModel');
 const Channel = require('../models/channelModel');
 const jwt = require('jsonwebtoken');
 const { v4: uuidv4 } = require('uuid');
@@ -12,7 +11,7 @@ router.post('/login', authController.login)
 
 const authenticateJWT = (req, res, next) => {
     const token = req.header('Authorization');
-    console.log(token)
+    // console.log(token)
     
     if (!token) {
       return res.status(403).json({ message: 'Token required' });
@@ -26,6 +25,7 @@ const authenticateJWT = (req, res, next) => {
       next();
     });
   };
+
 
 router.post('/channels', authenticateJWT, async (req, res) => {
     const { name, description, fields } = req.body;
