@@ -32,7 +32,6 @@ const CreateChannelForm = () => {
                     setTimeout(() => navigate(`/dashboard/${response.data[0]._id}`), 2000);
                 }
             } catch (error) {
-                // Handle errors, but do not display anything if token is invalid
                 console.error('Error checking channels:', error);
                 if (error.response && error.response.status === 403) {
                     setResponseMessage('Access forbidden: invalid token.');
@@ -61,15 +60,13 @@ const CreateChannelForm = () => {
             },
             });
 
-            
             if (response.statusText === "Created") {
-              console.log(response.data.channel);
-                localStorage.setItem('x-api-key', response.data.channel.apiKey);
-                setResponseMessage('Channel created successfully!');
-                setShowAlert(true);
-                setTimeout(() => {
-                    navigate(`/dashboard/${response.data.channel._id}`); // Redirect to the channel dashboard
-                }, 2000);
+              localStorage.setItem('x-api-key', response.data.channel.apiKey);
+              setResponseMessage('Channel created successfully!');
+              setShowAlert(true);
+              setTimeout(() => {
+                  navigate(`/dashboard/${response.data.channel._id}`); // Redirect to the channel dashboard
+              }, 2000);
             }
         } catch (error) {
             setResponseMessage(error.response ? error.response.data.message : 'Something went wrong');
@@ -93,30 +90,34 @@ const CreateChannelForm = () => {
             >
                 {({ isSubmitting, values, setFieldValue }) => (
                     <Form className="create-channel-form">
-                        <div>
+                        <div className="form-group">
                             <label htmlFor="name">Channel Name</label>
-                            <Field type="text" id="name" name="name" placeholder="Enter channel name" />
+                            <Field type="text" name="name" />
                             <ErrorMessage name="name" component="div" className="error-message" />
                         </div>
-                        <div>
+
+                        <div className="form-group">
                             <label htmlFor="description">Description</label>
-                            <Field type="text" id="description" name="description" placeholder="Enter description" />
+                            <Field type="text" name="description" />
                             <ErrorMessage name="description" component="div" className="error-message" />
                         </div>
-                        <div>
+
+                        <div className="form-group">
                             <label>Fields</label>
                             {values.fields.map((field, index) => (
-                                <div key={index}>
-                                    <Field type="text" name={`fields[${index}]`} placeholder={`Field ${index + 1}`} />
+                                <div key={index} className="field-group">
+                                    <Field type="text" name={`fields[${index}]`} placeholder="Enter field name" />
                                     <ErrorMessage name={`fields[${index}]`} component="div" className="error-message" />
-                                    <button type="button" onClick={() => setFieldValue('fields', [...values.fields, ''])}>
-                                        Add Field
-                                    </button>
+                                    <button type="button" onClick={() => setFieldValue('fields', values.fields.filter((_, i) => i !== index))}>Remove</button>
                                 </div>
                             ))}
+                            <button type="button" onClick={() => setFieldValue('fields', [...values.fields, ''])}>
+                                Add Field
+                            </button>
                         </div>
+
                         <button type="submit" className="submit-btn" disabled={isSubmitting}>
-                            {isSubmitting ? 'Creating...' : 'Create Channel'}
+                            Create Channel
                         </button>
                     </Form>
                 )}

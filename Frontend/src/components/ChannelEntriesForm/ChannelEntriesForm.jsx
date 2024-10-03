@@ -54,19 +54,21 @@ function ChannelEntriesForm() {
     e.preventDefault();
   
     try {
-      // const token = localStorage.getItem('token');
+      const token = localStorage.getItem('token');
       const apiKey = localStorage.getItem('x-api-key'); // No need to prefix 'Bearer' here
+      console.log("this is api key", apiKey);
+      console.log("this is token", token);
   
       const response = await axios.post(`http://localhost:4001/api/auth/channels/${channelId}/entries`, { 
         fieldData: formData,
       }, {
         headers: {
-          // 'Authorization': `Bearer ${token}`,
+          'Authorization': token,
           'x-api-key': apiKey,
       },
       });
-
-      console.log(apiKey);
+      console.log(response);
+      
   
       setResponseMessage(response.data.message);
       navigate(`/dashboard/${channelId}`); // Redirect back to the dashboard after submission
