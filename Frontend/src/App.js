@@ -8,7 +8,7 @@ import ChannelDashboard from './components/NewDashboard/NewDashboard';
 import LandingPage from './components/LandingPage/LandingPage';
 import CreateChannelForm from './components/CreateChannelForm/CreateChannelForm';
 import ChannelEntriesForm from './components/ChannelEntriesForm/ChannelEntriesForm';
-import CheckChannel from './components/CheckChannel/CheckChannel';
+// import CheckChannel from './components/CheckChannel/CheckChannel';
 
 function App() {
   return (
@@ -21,8 +21,9 @@ function App() {
           <Route path="/landing" element={<LandingPage />} />
           <Route path="/create-channel" element={<CreateChannelForm />} />
           <Route path="/dashboard/:id" element={<ChannelDashboard />} />
-          <Route path="/channels/:channelId/entries" element={<ChannelEntriesForm />} /> {/* New route for entries */}
-          <Route path="/check-channel" element={<CheckChannel/>} />
+          <Route path="/channels/:channelId/entries" element={<ChannelEntriesForm />} /> New route for entries
+          <Route path="/dashboard" element={<LandingPage />}/>
+          {/* <Route path="/check-channel" element={<CheckChannel/>} /> */}
           {/* <Route path="/data-entry" element={<ChannelEntriesForm />} /> */}
         </Routes>
       </Router>

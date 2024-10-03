@@ -1,35 +1,19 @@
-import React, {  useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import AlertModal from '../Alert/Alert';
 
 const LandingPage = () => {
     const navigate = useNavigate();
     const [error, setError] = useState(null);
 
-    const checkChannelExistence = async () => {
-        const token = localStorage.getItem('token');
-        if (!token) {
-            navigate('/signin'); // Redirect if no token exists
-            return;
-        }
+    const checkChannelExistence = () => {
+        const channelExists = localStorage.getItem('channelId'); // Simulating channel existence check
 
-        try {
-            const response = await axios.get('http://localhost:4001/api/channels', {
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                },
-            });
-
-            if (response.data.length > 0) {
-                // If channels exist, redirect to dashboard
-                navigate(`/dashboard/${response.data[0]._id}`);
-            } else {
-                setError('No channels found. Please create a channel.');
-            }
-        } catch (error) {
-            console.error('Error checking channels:', error);
-            setError('An error occurred while checking for channels.');
+        if (channelExists) {
+            // If a channel exists, redirect to dashboard
+            navigate(`/dashboard/${channelExists}`);
+        } else {
+            setError('No channels found. Please create a channel.');
         }
     };
 

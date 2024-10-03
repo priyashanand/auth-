@@ -22,7 +22,7 @@ const authenticateJWT = (req, res, next) => {
         return res.status(403).json({ message: 'Token required' });
     }
     
-  jwt.verify(token, 'secretkey123', (err, user) => {
+  jwt.verify(token.slice(7), 'secretkey123', (err, user) => {
     if (err) {
       return res.status(403).json({ message: 'Invalid token' });
     }
@@ -35,6 +35,57 @@ const authenticateJWT = (req, res, next) => {
 app.use('/api', authenticateJWT, authRouter);
 app.use('/api', dataRouter)
 
+const addEntryToChannel = async (channelId, fieldData, res) => {
+    try {
+        const channel = await Channel.findById(channelId);
+        if (!channel) {
+            return res.status(404).json({ message: 'Channel not found' });
+        }
+
+        const validFields = channel.fields; // Get valid fields from channel
+        const newEntry = { fieldData: [], timestamp: new Date() };
+
+        // Loop through provided field data and validate against channel fields
+        for (const [key, value] of Object.entries(fieldData)) {
+            if (validFields.includes(key)) {
+                newEntry.fieldData.push({ name: key, value }); // Only add valid fields
+            } else {
+                console.warn(`Field ${key} is not valid and will be ignored.`);
+            }
+        }
+
+        if (newEntry.fieldData.length === 0) {
+            return res.status(400).json({ message: 'No valid fields provided' });
+        }
+
+        // Add the entry to the channel's entries
+        channel.entries.push(newEntry);
+        await channel.save(); // Save the channel with the new entry
+
+        res.status(201).json({
+            message: 'Entry added successfully',
+            entry: newEntry
+        });
+    } catch (error) {
+        console.error('Error adding entry:', error);
+        res.status(500).json({ message: 'Failed to add entry', error: error.message });
+    }
+};
+app.use('/api', dataRouter);
+
+// Define routes for entries
+app.route('/api/channels/:channelId/entries')
+    .post(async (req, res) => {
+        const { channelId } = req.params;
+        const fieldData = req.body; // Expecting data in the request body
+        await addEntryToChannel(channelId, fieldData, res);
+    })
+    .get(async (req, res) => {
+        const { channelId } = req.params;
+        console.log(req.query);
+        const fieldData = req.query; // Expecting data in query parameters
+        await addEntryToChannel(channelId, fieldData, res);
+    });
 
 app.get('/', (req,res)=>{
     res.send('<h1>This is my server home</h1>')

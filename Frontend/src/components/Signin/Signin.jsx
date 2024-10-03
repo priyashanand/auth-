@@ -31,9 +31,11 @@ function SignIn() {
       // console.log(response)
       setShowAlert(true);
       if (response.data.status === 'success') {  // Assuming your API responds with a success flag
+        // console.log("duniys msadrchod hai")
         setTimeout(() => {
-          console.log(response);
+          // console.log(response);
           localStorage.setItem('token',response.data.token)
+          // console.log(response.data.token)
           // Example of setting token and API key after login
           // localStorage.setItem('apiKey', response.data.apiKey); // Channel-specific API key
 
