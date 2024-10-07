@@ -3,6 +3,7 @@ const mongoose = require('mongoose')
 const cors = require('cors') 
 const authRouter = require('./routes/authRoute')
 const dataRouter = require('./routes/dataRoute')
+const accountRouter = require('./routes/accountRoute')
 const jwt = require('jsonwebtoken');
 const Channel = require('./models/channelModel');
 
@@ -13,6 +14,7 @@ app.use(cors())
 app.use(express.json())
 
 app.use('/api/auth', authRouter)
+app.use('/api/auth', accountRouter)
 // yaha pr data ka middleware dalna hai
 
 const authenticateJWT = (req, res, next) => {
@@ -73,6 +75,7 @@ const addEntryToChannel = async (channelId, fieldData, res) => {
     }
 };
 
+app.use('/api', dataRouter);
 // Define routes for entries
 app.route('/api/channels/:channelId/entries')
     .post(async (req, res) => {
