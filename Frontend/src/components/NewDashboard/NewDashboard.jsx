@@ -4,7 +4,7 @@ import GaugeChartComponent from '../GuageChart/GuageChart';
 import LineChartComponent from '../LineChart/LineChart';
 import FieldDisplay from './FieldDisplay';
 import './NewDasboard.css';
-import AuthNavbar from '../Authorized-Navbar/AuthorizedNav';
+import Navbar from '../Navbar/Navbar';
 import { useParams } from 'react-router-dom';
 
 const ChannelDashboard = () => {
@@ -85,7 +85,7 @@ const ChannelDashboard = () => {
         // Show a message if there are no fields in the channel
         return (
             <>
-                <AuthNavbar />  {/* Navbar for authenticated users */}
+                <Navbar />  {/* Navbar for authenticated users */}
                 <div className="dashboard">
                     <div className="empty-state-message">
                         <h2>No Data Available</h2>
@@ -100,7 +100,7 @@ const ChannelDashboard = () => {
         // Render empty charts for each field based on channel fields, even if no data is available
         return (
             <>
-                <AuthNavbar />  {/* Navbar for authenticated users */}
+                <Navbar />  {/* Navbar for authenticated users */}
                 <div className="dashboard">
                     <div className="empty-state-message">
                         <h2>No Data Available</h2>
@@ -124,7 +124,7 @@ const ChannelDashboard = () => {
 
     return (
         <>
-            <AuthNavbar />  {/* Navbar for authenticated users */}
+            <Navbar />  {/* Navbar for authenticated users */}
             <div className="dashboard">
                 <div className="channel-info">
                     <h1>{channelData.name}</h1>

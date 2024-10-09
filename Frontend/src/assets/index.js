@@ -1,4 +1,4 @@
-import logo from "./xtrans_logo.webp";
+import logo from "./xtrans-logo.png";
 import graph from "./graph.png";
 
 const Images = {logo, graph};
