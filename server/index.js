@@ -25,7 +25,7 @@ const authenticateJWT = (req, res, next) => {
         return res.status(403).json({ message: 'Token required' });
     }
     
-  jwt.verify(token, 'secretkey123', (err, user) => {
+  jwt.verify(token.slice(7), 'secretkey123', (err, user) => {
     if (err) {
       return res.status(403).json({ message: 'Invalid token' });
     }
@@ -76,6 +76,7 @@ const addEntryToChannel = async (channelId, fieldData, res) => {
 };
 
 app.use('/api', dataRouter);
+
 // Define routes for entries
 app.route('/api/channels/:channelId/entries')
     .post(async (req, res) => {
