@@ -1,82 +1,92 @@
-/* Dashboard.css */
 .dashboard {
-    display: flex;
-    flex-direction: column;
-    padding: 30px;
-    background-color: #f0f2f5;
-  }
-  
+  display: flex;
+  flex-direction: column;
+  padding: 30px;
+  background-color: #f0f2f5;
+  min-height: 100vh;  /* Ensures full height */
+  gap: 20px; /* Add spacing between sections */
+}
+
+.channel-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 30px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  max-width: 100%;
+  flex-wrap: wrap; /* Ensure it wraps on smaller screens */
+}
+
+.channel-info h1 {
+  font-size: 28px;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+  text-transform: capitalize;
+}
+
+.channel-info p {
+  font-size: 18px;
+  color: #666;
+  margin: 0;
+  text-align: right; /* Align the description to the right */
+}
+
+.charts-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px; /* Adjusted gap for more spacing between charts */
+}
+
+.chart {
+  background-color: #fff;
+  padding: 25px;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+  max-width: 350px;  /* Ensure responsive sizing */
+  width: 100%;
+}
+
+.chart:hover {
+  transform: translateY(-5px);
+}
+
+.chart h4 {
+  font-size: 20px;
+  margin-bottom: 15px;
+  color: #444;
+}
+
+.field-display {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.gauge-chart, .line-chart {
+  max-width: 100%;
+  margin-top: 20px;
+}
+
+.empty-state-message {
+  text-align: center;
+  margin-top: 50px;
+}
+
+.empty-chart-message {
+  color: #999;
+  font-style: italic;
+  margin-top: 10px;
+}
+
+@media (max-width: 768px) {
   .channel-info {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    margin-bottom: 30px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+      flex-direction: column; /* Stacks title and description on smaller screens */
+      text-align: center;
   }
-  
-  .channel-info h1 {
-    font-size: 28px;
-    font-weight: 600;
-    color: #333;
-    margin: 0;
-  }
-  
-  .channel-info p {
-    font-size: 18px;
-    color: #666;
-    margin: 0;
-  }
-  
-  .charts-container {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 5%;
-  }
-  
-  .chart {
-    background-color: #fff;
-    padding: 25px;
-    margin-bottom: 2%;
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease;
-  }
-  
-  .chart:hover {
-    transform: translateY(-5px);
-  }
-  
-  .chart h4 {
-    font-size: 20px;
-    margin-bottom: 15px;
-    color: #444;
-  }
-  
-  .field-display {
-    text-align: center;
-    margin-bottom: 25px;
-  }
-  
-  .field-display h4 {
-    font-size: 18px;
-    font-weight: 600;
-    color: #555;
-    margin-bottom: 8px;
-  }
-  
-  .field-display p {
-    font-size: 26px;
-    font-weight: bold;
-    color: #222;
-    margin: 0;
-  }
-  
-  .gauge-chart, .line-chart {
-    max-width: 100%;
-    margin-top: 20px;
-  }
-  
+}

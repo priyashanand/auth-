@@ -8,22 +8,39 @@ import ChannelDashboard from './components/NewDashboard/NewDashboard';
 import LandingPage from './components/LandingPage/LandingPage';
 import CreateChannelForm from './components/CreateChannelForm/CreateChannelForm';
 import ChannelEntriesForm from './components/ChannelEntriesForm/ChannelEntriesForm';
-import CheckChannel from './components/CheckChannel/CheckChannel';
+import PrivateRoute from './PrivateRoute';
 
 function App() {
   return (
     <>
       <Router>
         <Routes>
+          {/* Public Routes */}
           <Route path='/' element={<Home />} />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
-          <Route path="/landing" element={<LandingPage />} />
-          <Route path="/create-channel" element={<CreateChannelForm />} />
-          <Route path="/dashboard/:id" element={<ChannelDashboard />} />
-          <Route path="/channels/:channelId/entries" element={<ChannelEntriesForm />} /> {/* New route for entries */}
-          <Route path="/check-channel" element={<CheckChannel/>} />
-          {/* <Route path="/data-entry" element={<ChannelEntriesForm />} /> */}
+          
+          {/* Protected Routes */}
+          <Route path="/landing" element={
+            <PrivateRoute>
+              <LandingPage />
+            </PrivateRoute>
+          } />
+          <Route path="/create-channel" element={
+            <PrivateRoute>
+              <CreateChannelForm />
+            </PrivateRoute>
+          } />
+          <Route path="/dashboard/:id" element={
+            <PrivateRoute>
+              <ChannelDashboard />
+            </PrivateRoute>
+          } />
+          <Route path="/channels/:channelId/entries" element={
+            <PrivateRoute>
+              <ChannelEntriesForm />
+            </PrivateRoute>
+          } />
         </Routes>
       </Router>
     </>

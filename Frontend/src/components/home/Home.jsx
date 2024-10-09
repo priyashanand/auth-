@@ -14,10 +14,10 @@ const Home = () => {
             Seamlessly integrate AI, ML, and Blockchain technologies with our
             powerful IoT platform.
           </p>
-          <div className="buttons">
+          <div className="buttons-home">
             {/* Use Link for navigation */}
-            <Link to="/signup" className="btn-primary">
-              Get Started
+            <Link to="/signup">
+              <button className="btn-primary">Get Started</button>
             </Link>
             <button className="btn-secondary">Contact Sales</button>
           </div>

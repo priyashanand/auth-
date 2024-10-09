@@ -59,6 +59,7 @@ const addEntryToChannel = async (channelId, fieldData, res) => {
 };
 
 app.use('/api', dataRouter);
+
 // Define routes for entries
 app.route('/api/channels/:channelId/entries')
     .post(async (req, res) => {
