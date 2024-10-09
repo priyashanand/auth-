@@ -4,7 +4,7 @@ const cors = require('cors')
 const authRouter = require('./routes/authRoute')
 const dataRouter = require('./routes/dataRoute')
 const accountRouter = require('./routes/accountRoute')
-const jwt = require('jsonwebtoken');
+const authenticateJWT = require('./middleware/authenticateJWT'); 
 const Channel = require('./models/channelModel');
 
 const app = express()
@@ -16,23 +16,6 @@ app.use(express.json())
 app.use('/api/auth', authRouter)
 app.use('/api/auth', accountRouter)
 // yaha pr data ka middleware dalna hai
-
-const authenticateJWT = (req, res, next) => {
-    const token = req.header('Authorization');
-    //   console.log(token)
-    
-    if (!token) {
-        return res.status(403).json({ message: 'Token required' });
-    }
-    
-  jwt.verify(token, 'secretkey123', (err, user) => {
-    if (err) {
-      return res.status(403).json({ message: 'Invalid token' });
-    }
-    req.user = user;
-    next();
-});
-};
 
 // Apply to routes
 app.use('/api/auth', authenticateJWT, authRouter);

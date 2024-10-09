@@ -3,6 +3,7 @@ const authController = require('../controllers/authController')
 const Channel = require('../models/channelModel');
 const jwt = require('jsonwebtoken');
 const { v4: uuidv4 } = require('uuid');
+const authenticateJWT = require('../middleware/authenticateJWT'); 
 
 const router = express.Router();
 
@@ -19,23 +20,6 @@ router.post('/login', authController.login)
 
 //     res.status(201).json({ message: 'Channel created successfully', apiKey });
 // });
-
-const authenticateJWT = (req, res, next) => {
-    const token = req.header('Authorization');
-    // console.log(token)
-    
-    if (!token) {
-      return res.status(403).json({ message: 'Token required' });
-    }
-  
-    jwt.verify(token, 'secretkey123', (err, user) => {
-      if (err) {
-        return res.status(403).json({ message: 'Invalid token' });
-      }
-      req.user = user;
-      next();
-    });
-  };
 
 
 router.post('/channels', authenticateJWT, async (req, res) => {
@@ -70,11 +54,27 @@ router.post('/channels', authenticateJWT, async (req, res) => {
 });
 
 
-router.get('/channels', async (req, res) => {
-    const userId = req.user.id;
-    const channels = await Channel.find({ userId });
-    res.json(channels);
-  });
+router.get('/channels', authenticateJWT, async (req, res) => {
+    try {
+        // Retrieve the user ID from the JWT token (set by authenticateJWT)
+        const userId = req.user._id;
+
+        // Find all channels that belong to the logged-in user
+        const userChannels = await Channel.find({ userId });
+
+        if (!userChannels.length) {
+            return res.status(404).json({ message: 'No channels found for this user' });
+        }
+
+        res.status(200).json({
+            message: 'Channels retrieved successfully',
+            channels: userChannels
+        });
+    } catch (error) {
+        console.error('Error retrieving channels:', error);
+        res.status(500).json({ message: 'Failed to retrieve channels', error: error.message });
+    }
+});
   
 
 // router.post('/channels/:channelId/entries', async (req, res) => {
