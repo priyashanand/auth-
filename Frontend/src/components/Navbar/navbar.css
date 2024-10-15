@@ -35,3 +35,6 @@
   cursor: pointer;
   transition: background-color 0.3s;
 }
+.profile {
+  z-index: 10;
+}

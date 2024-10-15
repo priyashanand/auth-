@@ -42,7 +42,7 @@
 
 /* Primary button styling */
 .sign-in-btn-primary {
-  background: #083b6c; /* Adjust color for buttons */
+  background: #2D2DA6; /* Adjust color for buttons */
   color: #fff;
   border: none;
   padding: 0.8rem; /* Slightly more padding for buttons */
@@ -72,7 +72,7 @@
 
 /* Additional styling for the sign-up button */
 .sign-in-sign-up-btn {
-  background: #083b6c; /* Consistent button color */
+  background: #2D2DA6; /* Consistent button color */
   color: #fff;
   border: none;
   padding: 0.8rem;
@@ -83,7 +83,7 @@
 }
 
 .sign-in-sign-up-btn:hover {
-  background: #062b4d;
+  background: #292998;
 }
 
 /* Body background gradient */

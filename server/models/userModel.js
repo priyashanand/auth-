@@ -35,9 +35,6 @@ const userSchema = new mongoose.Schema({
         type: String,
         unique: true,
     },
-    // iotTempData:{
-    //     type: Array,
-    // }
 })
 
 const User = mongoose.model('User', userSchema)
