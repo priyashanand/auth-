@@ -29,8 +29,8 @@
     gap: 20px;
   }
   
-  .btn-primary,
-  .btn-secondary {
+  .btn-primary-home,
+  .btn-secondary-home {
     padding: 15px 25px;
     font-size: 1rem;
     border: none;
@@ -41,8 +41,8 @@
     text-decoration: none;
   }
   
-  .btn-primary:hover,
-  .btn-secondary:hover {
+  .btn-primary-home:hover,
+  .btn-secondary-home:hover {
     opacity: 0.8;
   }
   

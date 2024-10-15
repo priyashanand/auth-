@@ -50,7 +50,7 @@ const CreateChannelForm = () => {
     };
 
     return (
-        <div className="create-channel-form-container">
+        <div className="unique-create-channel-container">
             <h2>Create a New Channel</h2>
             <Formik
                 initialValues={{ name: '', description: '', fields: [''] }}
@@ -58,41 +58,41 @@ const CreateChannelForm = () => {
                 onSubmit={handleSubmit}
             >
                 {({ isSubmitting, values }) => (
-                    <Form className="create-channel-form">
+                    <Form className="unique-create-channel-form">
                         {/* Channel Name */}
-                        <div>
+                        <div className="unique-form-group">
                             <label htmlFor="name">Channel Name</label>
                             <Field type="text" id="name" name="name" placeholder="Enter channel name" />
-                            <ErrorMessage name="name" component="div" className="error-message" />
+                            <ErrorMessage name="name" component="div" className="unique-error-message" />
                         </div>
 
                         {/* Channel Description */}
-                        <div>
+                        <div className="unique-form-group">
                             <label htmlFor="description">Description</label>
                             <Field type="text" id="description" name="description" placeholder="Enter description" />
-                            <ErrorMessage name="description" component="div" className="error-message" />
+                            <ErrorMessage name="description" component="div" className="unique-error-message" />
                         </div>
 
                         {/* Channel Fields */}
-                        <div>
+                        <div className="unique-form-group">
                             <label>Fields</label>
                             <FieldArray name="fields">
                                 {({ insert, remove, push }) => (
                                     <div>
                                         {values.fields.length > 0 && values.fields.map((field, index) => (
-                                            <div key={index} className="field-item">
+                                            <div key={index} className="unique-field-item">
                                                 <Field
                                                     type="text"
                                                     name={`fields.${index}`}
                                                     placeholder={`Field ${index + 1}`}
                                                 />
-                                                <ErrorMessage name={`fields.${index}`} component="div" className="error-message" />
+                                                <ErrorMessage name={`fields.${index}`} component="div" className="unique-error-message" />
                                                 
                                                 {/* Remove Field Button */}
                                                 {values.fields.length > 1 && (
                                                     <button
                                                         type="button"
-                                                        className="remove-field-btn"
+                                                        className="unique-remove-field-btn"
                                                         onClick={() => remove(index)}
                                                     >
                                                         Remove Field
@@ -103,7 +103,7 @@ const CreateChannelForm = () => {
                                         {/* Add Field Button */}
                                         <button
                                             type="button"
-                                            className="add-field-btn"
+                                            className="unique-add-field-btn"
                                             onClick={() => push('')}
                                         >
                                             Add Field
@@ -114,7 +114,7 @@ const CreateChannelForm = () => {
                         </div>
 
                         {/* Submit Button */}
-                        <button type="submit" className="submit-btn" disabled={isSubmitting}>
+                        <button type="submit" className="unique-submit-btn" disabled={isSubmitting}>
                             {isSubmitting ? 'Creating...' : 'Create Channel'}
                         </button>
                     </Form>

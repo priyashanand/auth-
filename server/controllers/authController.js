@@ -33,9 +33,12 @@ exports.signup = async (req, res, next) => {
             token,
             user:{
                 _id: newUser._id,
-                name: newUser.name,
+                firstName: newUser.firstName,
+                lastName: newUser.lastName,
                 email: newUser.email,
                 role: newUser.role,
+                mobileNUmber: newUser.mobileNumber,
+                avatar: newUser.avatar,
                 uuid: newUser.uuid,
                 // uid: newUser.uid
             }

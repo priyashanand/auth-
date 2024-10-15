@@ -1,6 +1,6 @@
-/* CreateChannelForm.css */
+/* Updated CSS with unique class names for this component */
 
-.create-channel-form-container {
+.unique-create-channel-container {
   max-width: 600px;
   margin: 2rem auto;
   padding: 2rem;
@@ -15,12 +15,12 @@ h2 {
   color: #333;
 }
 
-.create-channel-form {
+.unique-create-channel-form {
   display: flex;
   flex-direction: column;
 }
 
-.create-channel-form div {
+.unique-form-group {
   margin-bottom: 1rem;
 }
 
@@ -44,13 +44,13 @@ input[type="text"]:focus {
   outline: none;
 }
 
-.error-message {
+.unique-error-message {
   color: #d9534f;
   font-size: 0.875rem;
   margin-top: 0.25rem;
 }
 
-.submit-btn {
+.unique-submit-btn {
   padding: 0.75rem;
   background-color: #007bff;
   color: white;
@@ -61,11 +61,12 @@ input[type="text"]:focus {
   transition: background-color 0.3s;
 }
 
-.submit-btn:hover {
+.unique-submit-btn:hover {
   background-color: #0056b3;
 }
 
-button[type="button"] {
+.unique-add-field-btn,
+.unique-remove-field-btn {
   margin-top: 0.5rem;
   padding: 0.5rem;
   background-color: #6c757d;
@@ -76,13 +77,18 @@ button[type="button"] {
   transition: background-color 0.3s;
 }
 
-button[type="button"]:hover {
+.unique-add-field-btn:hover,
+.unique-remove-field-btn:hover {
   background-color: #5a6268;
+}
+
+.unique-field-item {
+  margin-bottom: 1rem;
 }
 
 /* Responsive design */
 @media (max-width: 600px) {
-  .create-channel-form-container {
+  .unique-create-channel-container {
       padding: 1rem;
   }
 }

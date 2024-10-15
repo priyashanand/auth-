@@ -1,7 +1,11 @@
 const mongoose = require('mongoose')
 
 const userSchema = new mongoose.Schema({
-    name: {
+    firstName: {
+        type: String,
+        required: true,
+    },
+    lastName: {
         type: String,
         required: true,
     },
@@ -18,13 +22,19 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    mobileNumber: {
+        type: String,
+        trim: true,
+        match: [/^\d{10}$/, 'Please enter a valid 10-digit mobile number'] 
+    },
+    avatar: {
+        type: String, 
+        default: ''  
+    },  
     uuid: {
         type: String,
         unique: true,
     },
-    // iotTempData:{
-    //     type: Array,
-    // }
 })
 
 const User = mongoose.model('User', userSchema)

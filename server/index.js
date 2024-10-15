@@ -3,7 +3,8 @@ const mongoose = require('mongoose')
 const cors = require('cors') 
 const authRouter = require('./routes/authRoute')
 const dataRouter = require('./routes/dataRoute')
-const jwt = require('jsonwebtoken');
+const accountRouter = require('./routes/accountRoute')
+const authenticateJWT = require('./middleware/authenticateJWT'); 
 const Channel = require('./models/channelModel');
 
 const app = express()
@@ -13,24 +14,8 @@ app.use(cors())
 app.use(express.json())
 
 app.use('/api/auth', authRouter)
+app.use('/api/auth', accountRouter)
 // yaha pr data ka middleware dalna hai
-
-const authenticateJWT = (req, res, next) => {
-    const token = req.header('Authorization');
-    //   console.log(token)
-    
-    if (!token) {
-        return res.status(403).json({ message: 'Token required' });
-    }
-    
-  jwt.verify(token.slice(7), 'secretkey123', (err, user) => {
-    if (err) {
-      return res.status(403).json({ message: 'Invalid token' });
-    }
-    req.user = user;
-    next();
-});
-};
 
 // Apply to routes
 app.use('/api/auth', authenticateJWT, authRouter);
@@ -72,6 +57,8 @@ const addEntryToChannel = async (channelId, fieldData, res) => {
         res.status(500).json({ message: 'Failed to add entry', error: error.message });
     }
 };
+app.use('/api', dataRouter);
+
 app.use('/api', dataRouter);
 
 // Define routes for entries

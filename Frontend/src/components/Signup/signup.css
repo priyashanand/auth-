@@ -4,7 +4,7 @@
     border-radius: 15px; /* Increase the border-radius for a softer look */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Increase shadow for more depth */
     padding: 2rem; /* Padding inside the card */
-    width: 340px; /* Adjust width for a slightly wider form */
+    width: 35%; /* Adjust width for a slightly wider form */
     margin: 4rem auto; /* Margin to center and space from top */
     text-align: center; /* Center align text in the card */
   }
@@ -38,7 +38,7 @@
   }
   
   .sign-up-btn-primary {
-    background: #083b6c; /* Adjust color for buttons */
+    background: #2D2DA6; /* Adjust color for buttons */
     color: #fff;
     border: none;
     padding: 0.8rem; /* Slightly more padding for buttons */
@@ -50,7 +50,7 @@
   }
   
   .sign-up-btn-primary:hover {
-    background-color: #062b4d;
+    background-color: #292998;
   }
   
 
