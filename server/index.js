@@ -57,6 +57,7 @@ const addEntryToChannel = async (channelId, fieldData, res) => {
         res.status(500).json({ message: 'Failed to add entry', error: error.message });
     }
 };
+
 app.use('/api', dataRouter);
 
 app.use('/api', dataRouter);
@@ -70,7 +71,6 @@ app.route('/api/channels/:channelId/entries')
     })
     .get(async (req, res) => {
         const { channelId } = req.params;
-        // console.log(req.query);
         const fieldData = req.query; // Expecting data in query parameters
         await addEntryToChannel(channelId, fieldData, res);
     });
