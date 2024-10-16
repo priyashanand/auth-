@@ -77,26 +77,38 @@ router.get('/channels', authenticateJWT, async (req, res) => {
 });
   
 
-// router.post('/channels/:channelId/entries', async (req, res) => {
-//     const { channelId } = req.params;
-//     const data = req.body;
-//     const channel = await Channel.findById(channelId);
+router.patch('/channels/:channelId', authenticateJWT, async (req, res) => {
+    const { channelId } = req.params;
+    const { name } = req.body;
 
-//     if (channel.apiKey !== req.header('x-api-key')) {
-//     return res.status(401).json({ message: 'Invalid API key' });
-//     }
+    if (!name) {
+        return res.status(400).json({ message: 'Channel name is required' });
+    }
 
-//     const entry = new Entry({ channelId, data });
-//     await entry.save();
+    try {
+        const userId = req.user._id;
 
-//     res.status(201).json({ message: 'Entry added successfully' });
-// });
+        // Find the channel by ID and ensure it belongs to the logged-in user
+        const channel = await Channel.findOne({ _id: channelId, userId });
 
-// router.get('/channels/:channelId/entries', async (req, res) => {
-//     const { channelId } = req.params;
-//     const entries = await Entry.find({ channelId });
-//     res.json(entries);
-// });
+        if (!channel) {
+            return res.status(404).json({ message: 'Channel not found or you do not have permission to update this channel' });
+        }
+
+        // Update the channel name
+        channel.name = name;
+        await channel.save();
+
+        res.status(200).json({
+            message: 'Channel name updated successfully',
+            channel
+        });
+    } catch (error) {
+        console.error('Error updating channel:', error);
+        res.status(500).json({ message: 'Failed to update channel name', error: error.message });
+    }
+});
+
 
 
 module.exports = router

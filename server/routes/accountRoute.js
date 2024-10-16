@@ -5,12 +5,9 @@ const authenticateJWT = require('../middleware/authenticateJWT');
 
 router.get('/me',authenticateJWT,async (req, res, next) => {
     try {
-        //console.log(req.user)
-        // The user ID is extracted from the JWT and available in req.user
         const userId = req.user._id;
 
-        // Fetch user details from the database
-        const user = await User.findById(userId, '-password'); // Exclude password
+        const user = await User.findById(userId, '-password');
 
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
@@ -39,32 +36,27 @@ router.get('/me',authenticateJWT,async (req, res, next) => {
 router.patch('/me', authenticateJWT, async (req, res) => {
     const { firstName, lastName } = req.body;
 
-    // Check if at least one field (firstName or lastName) is provided
     if (!firstName && !lastName) {
         return res.status(400).json({ message: 'At least one of first name or last name is required' });
     }
 
     try {
-        // Get the logged-in user's ID from the JWT token (set by authenticateJWT)
         const userId = req.user._id;
 
-        // Create an update object dynamically based on the provided fields
         const updateFields = {};
         if (firstName) updateFields.firstName = firstName;
         if (lastName) updateFields.lastName = lastName;
 
-        // Find the user by ID and update the provided fields
         const updatedUser = await User.findByIdAndUpdate(
             userId,
-            updateFields, // Update only the fields provided
-            { new: true, runValidators: true } // Return the updated user object and validate inputs
+            updateFields,
+            { new: true, runValidators: true }
         );
 
         if (!updatedUser) {
             return res.status(404).json({ message: 'User not found' });
         }
 
-        // Return the updated user info (excluding sensitive fields like password)
         res.status(200).json({
             message: 'User information updated successfully',
             user: {
