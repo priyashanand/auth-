@@ -9,6 +9,7 @@ import LandingPage from './components/LandingPage/LandingPage';
 import CreateChannelForm from './components/CreateChannelForm/CreateChannelForm';
 import ChannelEntriesForm from './components/ChannelEntriesForm/ChannelEntriesForm';
 import PrivateRoute from './PrivateRoute';
+import UserProfile from './components/UserProfile/UserProfile';
 
 function App() {
   return (
@@ -39,6 +40,11 @@ function App() {
           <Route path="/channels/:channelId/entries" element={
             <PrivateRoute>
               <ChannelEntriesForm />
+            </PrivateRoute>
+          } />
+          <Route path="/profile" element={
+            <PrivateRoute>
+              <UserProfile />
             </PrivateRoute>
           } />
         </Routes>

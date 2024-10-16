@@ -3,8 +3,8 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100vh; /* Full viewport height */
   background-color: #f7f9fc; /* Light background color */
+  height: 100vh;
   padding: 2rem;
   text-align: center; /* Center text alignment */
 }

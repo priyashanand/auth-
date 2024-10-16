@@ -1,0 +1,16 @@
+.sidebar {
+    width: 3rem;
+    background-color: rgb(43, 43, 43);
+    border-color: gray;
+}
+
+.sidebar:hover {
+    color: white;
+    background-color: #5e5eaa;
+    border-color: #5e5eaa;
+}
+
+.landing {
+    background-color: #a7a7b4 !important;
+    z-index: 0;
+}

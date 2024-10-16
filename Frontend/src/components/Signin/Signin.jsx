@@ -28,7 +28,7 @@ function SignIn() {
       if (response.data.status === 'success') {
         localStorage.setItem('token', response.data.token);
         localStorage.setItem('userId',response.data.user._id);
-        // console.log(response);
+        console.log(response);
         navigate('/landing');
       }
     } catch (error) {

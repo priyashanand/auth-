@@ -17,9 +17,9 @@ const Home = () => {
           <div className="buttons-home">
             {/* Use Link for navigation */}
             <Link to="/signup">
-              <button className="btn-primary">Get Started</button>
+              <button className="btn-primary-home">Get Started</button>
             </Link>
-            <button className="btn-secondary">Contact Sales</button>
+            <button className="btn-secondary-home">Contact Sales</button>
           </div>
         </main>
       </div>

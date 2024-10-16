@@ -6,6 +6,7 @@ import FieldDisplay from './FieldDisplay';
 import './NewDasboard.css';
 import Navbar from '../Navbar/Navbar';
 import { useParams } from 'react-router-dom';
+import SecondaryNavbar from '../SecondaryNavbar/SecondaryNavbar';
 
 const ChannelDashboard = () => {
     const [channelData, setChannelData] = useState({});
@@ -18,6 +19,7 @@ const ChannelDashboard = () => {
             try {
                 // Fetch the channel's field data and entries dynamically using the channel ID
                 const fieldResponse = await axios.get(`http://localhost:4001/api/channels/${id}/entries/read`);
+                console.log(fieldResponse);
                 
                 if (!fieldResponse.data.entries || fieldResponse.data.entries.length === 0) {
                     console.error('No entries found for this channel');
@@ -86,6 +88,7 @@ const ChannelDashboard = () => {
         return (
             <>
                 <Navbar />  {/* Navbar for authenticated users */}
+                <SecondaryNavbar />
                 <div className="dashboard">
                     <div className="empty-state-message">
                         <h2>No Data Available</h2>
@@ -101,6 +104,7 @@ const ChannelDashboard = () => {
         return (
             <>
                 <Navbar />  {/* Navbar for authenticated users */}
+                <SecondaryNavbar />
                 <div className="dashboard">
                     <div className="empty-state-message">
                         <h2>No Data Available</h2>
@@ -125,11 +129,12 @@ const ChannelDashboard = () => {
     return (
         <>
             <Navbar />  {/* Navbar for authenticated users */}
+            <SecondaryNavbar />
             <div className="dashboard">
-                <div className="channel-info">
+                {/* <div className="channel-info">
                     <h1>{channelData.name}</h1>
                     <p>{channelData.description}</p>
-                </div>
+                </div> */}
 
                 <div className="charts-container">
                     {/* Map over the fields and display gauge and line charts for each */}
