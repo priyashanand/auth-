@@ -6,6 +6,7 @@ const dataRouter = require('./routes/dataRoute')
 const accountRouter = require('./routes/accountRoute')
 const authenticateJWT = require('./middleware/authenticateJWT'); 
 const Channel = require('./models/channelModel');
+const csvRouter = require('./routes/csvRoute');
 
 const app = express()
 const port = 4001
@@ -20,6 +21,9 @@ app.use('/api/auth', accountRouter)
 // Apply to routes
 app.use('/api/auth', authenticateJWT, authRouter);
 // app.use('/api', dataRouter)
+
+//downloading the csvfile
+app.use('/api/csv', csvRouter);
 
 const addEntryToChannel = async (channelId, fieldData, res) => {
     try {
@@ -57,8 +61,6 @@ const addEntryToChannel = async (channelId, fieldData, res) => {
         res.status(500).json({ message: 'Failed to add entry', error: error.message });
     }
 };
-
-app.use('/api', dataRouter);
 
 app.use('/api', dataRouter);
 
