@@ -110,5 +110,22 @@ router.patch('/channels/:channelId', authenticateJWT, async (req, res) => {
 });
 
 
+router.delete('/channels/:channelId', authenticateJWT, async (req, res) => {
+    const { channelId } = req.params;
+
+    try {
+        // Find the channel by ID and ensure it belongs to the logged-in user
+        const channel = await Channel.findOneAndDelete({ _id: channelId, userId: req.user._id });
+
+        if (!channel) {
+            return res.status(404).json({ message: 'Channel not found or unauthorized access' });
+        }
+
+        res.status(200).json({ message: 'Channel deleted successfully' });
+    } catch (error) {
+        console.error('Error deleting channel:', error);
+        res.status(500).json({ message: 'Failed to delete channel', error: error.message });
+    }
+});
 
 module.exports = router

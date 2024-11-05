@@ -29,6 +29,10 @@ const channelSchema = new mongoose.Schema({
         name: String, 
         type: String 
     }],
+    timestamp: { 
+        type: Date, 
+        default: Date.now 
+    },
     entries: [entrySchema]
 });
 
