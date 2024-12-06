@@ -23,6 +23,9 @@ router.post('/login', authController.login)
 
 router.post('/channels', authenticateJWT,async (req, res) => {
     const { name, description, fields } = req.body;
+    const myheader = req.header;
+
+    console.log(myheader);
 
     if (!name || !fields) {
         return res.status(400).json({ message: 'Channel name and fields are required' });
@@ -36,7 +39,8 @@ router.post('/channels', authenticateJWT,async (req, res) => {
         const userId = req.user._id;
         const apiKey = uuidv4(); 
 
-        const channelCount = await Channel.countDocuments({ userId });
+        let channelCount = await Channel.countDocuments({ userId });
+        console.log(channelCount)
         if (channelCount >= 4) {
             return res.status(400).json({ message: 'User cannot have more than 4 channels.' });
         }

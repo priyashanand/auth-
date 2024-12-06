@@ -20,3 +20,5 @@ authentication email
 
 
 https://www.youtube.com/watch?v=Qfh2tWa1rBU
+
+mongodb+srv://xtrans:xtranscloud@cluster0.8rn7t.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0

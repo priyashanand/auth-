@@ -15,7 +15,21 @@ const {v4: uuidv4} = require('uuid')
 const app = express()
 const port = 4001
 
-app.use(cors())
+// const corsOptions = {
+//     origin: 'https://xtrans-cloud.vercel.app', 
+//     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'], 
+//     allowedHeaders: ['Content-Type', 'Authorization'], 
+//   };
+
+const corsOptions ={
+    origin: 'http://localhost:3000',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true,
+  };
+  
+  
+app.use(cors(corsOptions));
 app.use(express.json())
 
 app.use('/api/auth', authRouter)
