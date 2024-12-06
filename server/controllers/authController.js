@@ -31,23 +31,23 @@ oauth2Client.setCredentials({
 
 
 
-const createTransporter = async () => {
-    const accessToken = await getNewAccessToken();
+// const createTransporter = async () => {
+//     const accessToken = await getNewAccessToken();
 
-    return nodemailer.createTransport({
-        host: 'smtp.gmail.com',
-        port: 465,
-        secure: true,
-        auth: {
-            type: 'OAuth2',
-            user: process.env.USER_EMAIL,
-            clientId: process.env.CLIENT_ID,
-            clientSecret: process.env.CLIENT_SECRET,
-            refreshToken: process.env.REFRESH_TOKEN,
-            accessToken, // Use refreshed access token
-        },
-    });
-};
+//     return nodemailer.createTransport({
+//         host: 'smtp.gmail.com',
+//         port: 465,
+//         secure: true,
+//         auth: {
+//             type: 'OAuth2',
+//             user: process.env.USER_EMAIL,
+//             clientId: process.env.CLIENT_ID,
+//             clientSecret: process.env.CLIENT_SECRET,
+//             refreshToken: process.env.REFRESH_TOKEN,
+//             accessToken, // Use refreshed access token
+//         },
+//     });
+// };
 
 
 exports.signup = async (req, res, next) => {
@@ -69,16 +69,16 @@ exports.signup = async (req, res, next) => {
         });
 
         // Send verification email
-        const transporter = await createTransporter();
-        transporter.verify((error, success)=>{
-            if(error){
-                console.log(error)
-            }
-            else{
-                console.log("message ready to be sent")
-                console.log(success)
-            }
-        })
+        // const transporter = await createTransporter();
+        // transporter.verify((error, success)=>{
+        //     if(error){
+        //         console.log(error)
+        //     }
+        //     else{
+        //         console.log("message ready to be sent")
+        //         console.log(success)
+        //     }
+        // })
 
         const verificationLink = `http://localhost:4001/verify?uuid=${newUser.uuid}`;
         // await transporter.sendMail({
