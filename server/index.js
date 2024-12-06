@@ -1,45 +1,27 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const cors = require('cors') 
-require('dotenv').config();
 const authRouter = require('./routes/authRoute')
 const dataRouter = require('./routes/dataRoute')
 const accountRouter = require('./routes/accountRoute')
 const authenticateJWT = require('./middleware/authenticateJWT'); 
 const Channel = require('./models/channelModel');
-const verification = require('./controllers/verificationController')
-// const createChannel = require('./controllers/channelController')
-const nodemailer = require('nodemailer');
 const csvRouter = require('./routes/csvRoute');
-const {v4: uuidv4} = require('uuid')
+
 const app = express()
 const port = 4001
 
-// const corsOptions = {
-//     origin: 'https://xtrans-cloud.vercel.app', 
-//     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'], 
-//     allowedHeaders: ['Content-Type', 'Authorization'], 
-//   };
-
-const corsOptions ={
-    origin: 'http://localhost:3000',
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-    credentials: true,
-  };
-  
-  
-app.use(cors(corsOptions));
+app.use(cors())
 app.use(express.json())
 
 app.use('/api/auth', authRouter)
 app.use('/api/auth', accountRouter)
 // yaha pr data ka middleware dalna hai
-app.use('/verify', verification.verifyEmail)
+
 // Apply to routes
 app.use('/api/auth', authenticateJWT, authRouter);
 // app.use('/api', dataRouter)
-// app.post('api/auth/channels', authenticateJWT, createChannel.createChannel);
+
 //downloading the csvfile
 app.use('/api/csv', csvRouter);
 
@@ -105,7 +87,7 @@ mongoose
     .catch((error)=>console.error('Failed to connect : ', error))
 
 // mongoose
-//     .connect(process.env.MONGO_URI)
+//     .connect('mongodb+srv://priyash:1234@cluster0.v3ifnq6.mongodb.net/authentication?retryWrites=true&w=majority&appName=Cluster0')
 //     .then(()=> console.log('Connected to mongodb'))
 //     .catch((error)=>console.error('Failed to connect : ', error))
 

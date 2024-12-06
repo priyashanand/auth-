@@ -5,7 +5,7 @@ const Channel = require('../models/channelModel');
 const { Parser } = require('json2csv'); // Import json2csv parser
 
 // Route to get all field values from a specified channel in CSV format
-csvRouter.get('/channels/:channelId/fields/csv', async (req, res) => {
+csvRouter.get('/channels/:channelId/fields/csv', authenticateJWT, async (req, res) => {
     const { channelId } = req.params;
     
     try {

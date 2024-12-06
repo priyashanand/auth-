@@ -9,6 +9,7 @@ const router = express.Router();
 
 router.post('/signup', authController.signup)
 router.post('/login', authController.login)
+
 // router.post('/channels', async (req, res) => {
 //     const { name, description, fields } = req.body;
 //     const userId = req.user.id;
@@ -21,29 +22,16 @@ router.post('/login', authController.login)
 // });
 
 
-router.post('/channels', authenticateJWT,async (req, res) => {
+router.post('/channels', authenticateJWT, async (req, res) => {
     const { name, description, fields } = req.body;
-    const myheader = req.header;
-
-    console.log(myheader);
 
     if (!name || !fields) {
         return res.status(400).json({ message: 'Channel name and fields are required' });
-    }
-    
-    if (!req.user.verified) {
-        return res.status(403).json({ message: 'Account not verified. Please verify your email to create channels.' });
     }
 
     try {
         const userId = req.user._id;
         const apiKey = uuidv4(); 
-
-        let channelCount = await Channel.countDocuments({ userId });
-        console.log(channelCount)
-        if (channelCount >= 4) {
-            return res.status(400).json({ message: 'User cannot have more than 4 channels.' });
-        }
 
         // Create the new channel
         const newChannel = new Channel({
@@ -122,22 +110,5 @@ router.patch('/channels/:channelId', authenticateJWT, async (req, res) => {
 });
 
 
-router.delete('/channels/:channelId', authenticateJWT, async (req, res) => {
-    const { channelId } = req.params;
-
-    try {
-        // Find the channel by ID and ensure it belongs to the logged-in user
-        const channel = await Channel.findOneAndDelete({ _id: channelId, userId: req.user._id });
-
-        if (!channel) {
-            return res.status(404).json({ message: 'Channel not found or unauthorized access' });
-        }
-
-        res.status(200).json({ message: 'Channel deleted successfully' });
-    } catch (error) {
-        console.error('Error deleting channel:', error);
-        res.status(500).json({ message: 'Failed to delete channel', error: error.message });
-    }
-});
 
 module.exports = router

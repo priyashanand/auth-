@@ -14,9 +14,6 @@ const userSchema = new mongoose.Schema({
         unique: true,
         required: true,
     },
-    verified: {
-        type: Boolean,
-    },
     role: {
         type: String,
         default: "user",
@@ -38,10 +35,6 @@ const userSchema = new mongoose.Schema({
         type: String,
         unique: true,
     },
-    timestamp: { 
-        type: Date, 
-        default: Date.now 
-    }
 })
 
 const User = mongoose.model('User', userSchema)
