@@ -19,15 +19,15 @@ oauth2Client.setCredentials({
 });
 
 // Function to get a new access token
-async function getNewAccessToken() {
-    try {
-        const { token } = await oauth2Client.getAccessToken();
-        return token;
-    } catch (error) {
-        console.error('Error refreshing access token:', error.message);
-        throw new Error('Could not refresh access token');
-    }
-}
+// async function getNewAccessToken() {
+//     try {
+//         const { token } = await oauth2Client.getAccessToken();
+//         return token;
+//     } catch (error) {
+//         console.error('Error refreshing access token:', error.message);
+//         throw new Error('Could not refresh access token');
+//     }
+// }
 
 
 
@@ -81,12 +81,12 @@ exports.signup = async (req, res, next) => {
         })
 
         const verificationLink = `http://localhost:4001/verify?uuid=${newUser.uuid}`;
-        await transporter.sendMail({
-            from: process.env.EMAIL_USER,
-            to: newUser.email,
-            subject: 'Email Verification',
-            text: `Please verify your email by clicking the following link: ${verificationLink}`,
-        });
+        // await transporter.sendMail({
+        //     from: process.env.EMAIL_USER,
+        //     to: newUser.email,
+        //     subject: 'Email Verification',
+        //     text: `Please verify your email by clicking the following link: ${verificationLink}`,
+        // });
 
         const token = jwt.sign({ _id: newUser._id , verified: newUser.verified}, 'secretkey123', {
             expiresIn: '1d',
