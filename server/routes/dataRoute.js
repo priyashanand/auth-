@@ -221,4 +221,38 @@ router.patch('/channels/:channelId/remove-fields', authenticateJWT, async (req, 
     await removeFieldFromChannel(channelId, fields, res);
 });
 
+router.delete('/channels/:channelId/fields/:fieldName', authenticateJWT, async (req, res) => {
+    const { channelId, fieldName } = req.params;
+
+    try {
+        // Find the channel by ID and ensure it belongs to the logged-in user
+        const channel = await Channel.findOne({ _id: channelId, userId: req.user._id });
+        if (!channel) {
+            return res.status(404).json({ message: 'Channel not found or unauthorized access' });
+        }
+
+        // Check if the field exists in the channel
+        if (!channel.fields.includes(fieldName)) {
+            return res.status(404).json({ message: `Field '${fieldName}' not found in the channel` });
+        }
+
+        // Remove the field from the fields array
+        channel.fields = channel.fields.filter(field => field !== fieldName);
+
+        // Remove the field data from each entry in the channel's entries
+        channel.entries = channel.entries.map(entry => {
+            entry.fieldData = entry.fieldData.filter(field => field.name !== fieldName);
+            return entry;
+        });
+
+        // Save the updated channel
+        await channel.save();
+
+        res.status(200).json({ message: `Field '${fieldName}' deleted successfully from channel` });
+    } catch (error) {
+        console.error('Error deleting field:', error);
+        res.status(500).json({ message: 'Failed to delete field', error: error.message });
+    }
+});
+
 module.exports = router;

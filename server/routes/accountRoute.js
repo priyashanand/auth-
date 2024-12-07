@@ -24,7 +24,8 @@ router.get('/me',authenticateJWT,async (req, res, next) => {
                 mobileNumber: user.mobileNumber,
                 avatar: user.avatar,
                 uuid: user.uuid,
-                role: user.role
+                role: user.role,
+                verified: false
             }
         });
     } catch (error) {

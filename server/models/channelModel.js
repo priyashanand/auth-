@@ -25,11 +25,27 @@ const channelSchema = new mongoose.Schema({
         required: true 
     },
     //this is array of objects
-    fields: [{ 
-        name: String, 
-        type: String 
-    }],
-    entries: [entrySchema]
+    // fields: [{ 
+    //     name: String, 
+    //     type: String 
+    // }],
+    fields: {
+        type: [{
+            name: String, 
+            type: String
+        }],
+        validate: {
+            validator: function(value) {
+                return value.length <= 5;
+            },
+            message: 'The fields array must contain no more than 5 items.'
+        }
+    },
+    timestamp: { 
+        type: Date, 
+        default: Date.now 
+    },
+    entries: [entrySchema],
 });
 
 module.exports = mongoose.model('Channel', channelSchema);
