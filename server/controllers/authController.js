@@ -5,6 +5,53 @@ const bcrypt = require('bcrypt')
 const uuid = require('uuid')
 
 let uniqueId = 1
+const { v4: uuidv4 } = require('uuid');
+const nodemailer = require('nodemailer');
+const { google } = require('googleapis');
+require('dotenv').config();
+
+
+const oauth2Client = new google.auth.OAuth2(
+    process.env.CLIENT_ID,
+    process.env.CLIENT_SECRET,
+    'https://developers.google.com/oauthplayground' // Redirect URI
+);
+
+oauth2Client.setCredentials({
+    refresh_token: process.env.REFRESH_TOKEN,
+});
+
+// Function to get a new access token
+// async function getNewAccessToken() {
+//     try {
+//         const { token } = await oauth2Client.getAccessToken();
+//         return token;
+//     } catch (error) {
+//         console.error('Error refreshing access token:', error.message);
+//         throw new Error('Could not refresh access token');
+//     }
+// }
+
+
+
+// const createTransporter = async () => {
+//     const accessToken = await getNewAccessToken();
+
+//     return nodemailer.createTransport({
+//         host: 'smtp.gmail.com',
+//         port: 465,
+//         secure: true,
+//         auth: {
+//             type: 'OAuth2',
+//             user: process.env.USER_EMAIL,
+//             clientId: process.env.CLIENT_ID,
+//             clientSecret: process.env.CLIENT_SECRET,
+//             refreshToken: process.env.REFRESH_TOKEN,
+//             accessToken, // Use refreshed access token
+//         },
+//     });
+// };
+
 
 exports.signup = async (req, res, next) => {
     try{
@@ -21,9 +68,30 @@ exports.signup = async (req, res, next) => {
             // uid: uniqueId,
             uuid: apikey,
             password: hashedPassword,
-        })
+            verified: false // New users are unverified by default
+        });
 
-        const token = jwt.sign({_id: newUser._id}, 'secretkey123',{
+        // Send verification email
+        // const transporter = await createTransporter();
+        // transporter.verify((error, success)=>{
+        //     if(error){
+        //         console.log(error)
+        //     }
+        //     else{
+        //         console.log("message ready to be sent")
+        //         console.log(success)
+        //     }
+        // })
+
+        const verificationLink = `http://localhost:4001/verify?uuid=${newUser.uuid}`;
+        // await transporter.sendMail({
+        //     from: process.env.EMAIL_USER,
+        //     to: newUser.email,
+        //     subject: 'Email Verification',
+        //     text: `Please verify your email by clicking the following link: ${verificationLink}`,
+        // });
+
+        const token = jwt.sign({ _id: newUser._id , verified: newUser.verified}, 'secretkey123', {
             expiresIn: '1d',
         })
 
