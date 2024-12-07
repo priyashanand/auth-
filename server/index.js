@@ -22,7 +22,7 @@ const port = 4001
 //   };
 
 const corsOptions ={
-    origin: 'http://localhost:3000',
+    origin: 'https://xtans-cloud-backend-js9fuevv5-priyash-s-projects.vercel.app',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,
