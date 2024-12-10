@@ -22,7 +22,7 @@ const port = 4001
 //   };
 
 const corsOptions ={
-    origin: 'https://xtans-cloud-backend-js9fuevv5-priyash-s-projects.vercel.app',
+    origin: 'xtans-cloud-backend-no287rtm8-priyash-s-projects.vercel.app',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,
@@ -101,21 +101,21 @@ app.get('/', (req,res)=>{
 
 app.get('/api/message', (req, res) => {
     const message = {
-        message: 'Hello, we reached a server',
+        message: 'Hello, we reached a server and db',
         timestamp: new Date().toISOString(),
     };
     res.json(message);
 });
 
-mongoose
-    .connect('mongodb://127.0.0.1:27017/authentication')
-    .then(()=> console.log('Connected to mongodb'))
-    .catch((error)=>console.error('Failed to connect : ', error))
-
 // mongoose
-//     .connect(process.env.MONGO_URI)
+//     .connect('mongodb://127.0.0.1:27017/authentication')
 //     .then(()=> console.log('Connected to mongodb'))
 //     .catch((error)=>console.error('Failed to connect : ', error))
+
+mongoose
+    .connect(process.env.MONGO_URI)
+    .then(()=> console.log('Connected to mongodb'))
+    .catch((error)=>console.error('Failed to connect : ', error))
 
 app.use((err, req, res, next)=>{
     err.statuCode = err.statuCode || 500
