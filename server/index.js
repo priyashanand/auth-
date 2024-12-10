@@ -99,10 +99,13 @@ app.get('/', (req,res)=>{
     res.send('<h1>This is my server home</h1>')
 })
 
-app.get('/message', (req,res)=>{
-    const myMessage = JSON.stringify({message: "the server is reached"});
-    res.send(myMessage);
-})
+app.get('/api/message', (req, res) => {
+    const message = {
+        message: 'Hello, we reached a server',
+        timestamp: new Date().toISOString(),
+    };
+    res.json(message);
+});
 
 mongoose
     .connect('mongodb://127.0.0.1:27017/authentication')
