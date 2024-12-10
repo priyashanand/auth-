@@ -96,13 +96,15 @@ app.route('/api/channels/:channelId/entries')
     });
 
 app.get('/', (req,res)=>{
-    res.send('<h1>This is my server home</h1>')
+    res.send('<h2>This is my server home</h2>')
 })
 
 // mongoose
 //     .connect('mongodb://127.0.0.1:27017/authentication')
 //     .then(()=> console.log('Connected to mongodb'))
 //     .catch((error)=>console.error('Failed to connect : ', error))
+
+//this variable shows the connection status for the db in get req /api/message 
 var status = ''
 
 mongoose
