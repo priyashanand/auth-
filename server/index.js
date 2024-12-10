@@ -99,23 +99,22 @@ app.get('/', (req,res)=>{
     res.send('<h1>This is my server home</h1>')
 })
 
-app.get('/api/message', (req, res) => {
-    const message = {
-        message: 'Hello, we reached a server and db',
-        timestamp: new Date().toISOString(),
-    };
-    res.json(message);
-});
-
 // mongoose
 //     .connect('mongodb://127.0.0.1:27017/authentication')
 //     .then(()=> console.log('Connected to mongodb'))
 //     .catch((error)=>console.error('Failed to connect : ', error))
+var status = ''
 
 mongoose
     .connect(process.env.MONGO_URI)
-    .then(()=> console.log('Connected to mongodb'))
-    .catch((error)=>console.error('Failed to connect : ', error))
+    .then(()=> {
+        console.log('Connected to mongodb')
+        status = 'connected'
+    })
+    .catch((error)=>{
+        console.error('Failed to connect : ', error)
+        status = 'unable to connect'
+    })
 
 app.use((err, req, res, next)=>{
     err.statuCode = err.statuCode || 500
@@ -127,6 +126,14 @@ app.use((err, req, res, next)=>{
     })
 })
 
+app.get('/api/message', (req, res) => {
+    const message = {
+        message: 'Hello, we reached a server and db',
+        timestamp: new Date().toISOString(),
+        status,
+    };
+    res.json(message);
+});
 app.listen(port,()=>{
     console.log(`Server is running on port ${port}`)
 })
