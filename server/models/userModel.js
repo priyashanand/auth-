@@ -14,6 +14,10 @@ const userSchema = new mongoose.Schema({
         unique: true,
         required: true,
     },
+    resetLink: {
+        type: String,
+        default: '',
+    },
     verified: {
         type: Boolean,
     },

@@ -3,95 +3,8 @@ const jwt = require('jsonwebtoken')
 const createError = require('../utils/appError')
 const bcrypt = require('bcrypt')
 const { v4: uuidv4 } = require('uuid');
-const nodemailer = require('nodemailer');
-const { google } = require('googleapis');
+const createTransporter = require('../utils/nodeMailer')
 require('dotenv').config();
-
-
-// const oauth2Client = new google.auth.OAuth2(
-//     process.env.CLIENT_ID,
-//     process.env.CLIENT_SECRET,
-//     'https://developers.google.com/oauthplayground' // Redirect URI
-// );
-
-// oauth2Client.setCredentials({
-//     refresh_token: process.env.REFRESH_TOKEN,
-// });
-
-// // Function to get a new access token
-// async function getNewAccessToken() {
-//     try {
-//         const { token } = await oauth2Client.getAccessToken();
-//         console.log("Access token has been refreshed")
-//         return token;
-//     } catch (error) {
-//         console.error('Error refreshing access token:', error.message);
-//         throw new Error('Could not refresh access token');
-//     }
-// }
-
-
-
-// const createTransporter = async () => {
-//     const accessToken = await getNewAccessToken();
-
-//     return nodemailer.createTransport({
-//         host: 'smtp.gmail.com',
-//         port: 465,
-//         secure: true,
-//         auth: {
-//             type: 'OAuth2',
-//             user: process.env.USER_EMAIL,
-//             clientId: process.env.CLIENT_ID,
-//             clientSecret: process.env.CLIENT_SECRET,
-//             refreshToken: process.env.REFRESH_TOKEN,
-//             accessToken, // Use refreshed access token
-//         },
-//     });
-// };
-
-
-const createTransporter = async () => {
-    try {
-      const oauth2Client = new google.auth.OAuth2(
-          process.env.CLIENT_ID,
-          process.env.CLIENT_SECRET,
-          "https://developers.google.com/oauthplayground/"
-        );
- 
-        oauth2Client.setCredentials({
-          refresh_token: process.env.REFRESH_TOKEN,
-        });
- 
-        const accessToken = await new Promise((resolve, reject) => {
-          oauth2Client.getAccessToken((err, token) => {
-            if (err) {
-              console.log("could not generate access token")
-              console.log("*ERR: ", err)
-              reject();
-            }
-            resolve(token); 
-          });
-        });
- 
-        const transporter = nodemailer.createTransport({
-          service: "gmail",
-          auth: {
-            type: "OAuth2",
-            user: process.env.USER_EMAIL,
-            accessToken,
-            clientId: process.env.CLIENT_ID,
-            clientSecret: process.env.CLIENT_SECRET,
-            refreshToken: process.env.REFRESH_TOKEN,
-          },
-        });
-        
-        return transporter;
-    } catch (err) {
-      return err
-    }
-  };
- 
 
 
 exports.signup = async (req, res, next) => {
@@ -220,3 +133,53 @@ exports.verifyEmail = async (req, res, next) => {
         next(error);
     }
 };
+
+
+exports.forgetPassword = async(req, res, next) => {
+    try {
+        const email = req.body.email;
+        console.log(email);
+        const user = await User.findOne({email});
+        if (!user){
+            return next(new createError('User not found', 404));
+        }
+
+        const token = jwt.sign({_id: user._id, verified: user.verified}, 'secretkey321', {expiresIn:'15m'})
+
+        const data = {
+            to: email,
+            subject: 'Reset Account Password Link',
+            html: `
+            <h3>Please click the link below to reset your password</h3>
+            <p>http://localhost:4001/resetpassword/${token}</p>
+            `,
+          }
+          const transporter = await createTransporter();
+        //   console.log(transporter)
+          transporter.verify((error, success)=>{
+            if(error){
+                console.log("message cannot be sent")
+                console.log(error)
+            }
+            else{
+                console.log("message ready to be sent")
+                console.log(success) 
+            }
+          })
+
+          transporter.sendMail(data, function(error, body) {
+            if (error) {
+              return res.status(400).json({error: error.message})
+            }
+            return res.status(200).json({message: 'Email has been sent, please follow the instructions'})
+          })
+
+
+    } catch (error) {
+        next(error)
+    }
+}
+
+
+
+// creating update password
