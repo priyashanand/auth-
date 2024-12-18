@@ -81,8 +81,7 @@ exports.login = async (req, res, next) => {
 
         if(!user) return next(new createError('User not found', 404));
         
-        const isPasswordValid = bcrypt.compare(password, user.password)
-
+        const isPasswordValid = await bcrypt.compare(password, user.password)
         if(!isPasswordValid) return next(new createError('Incorrect password', 401));
 
         const token = jwt.sign({_id: user._id, verified: user.verified}, 'secretkey123',{
@@ -146,12 +145,21 @@ exports.forgetPassword = async(req, res, next) => {
 
         const token = jwt.sign({_id: user._id, verified: user.verified}, 'secretkey321', {expiresIn:'15m'})
 
+        //   console.log(typeof(token));
+        user.resetLink = token
+
+        user.save()
+
+        // await user.updateOne({},{
+        //     resetLink: token,
+        // })
+
         const data = {
             to: email,
             subject: 'Reset Account Password Link',
             html: `
             <h3>Please click the link below to reset your password</h3>
-            <p>http://localhost:4001/resetpassword/${token}</p>
+            <p>http://localhost:4001/api/auth/update-password/${token}</p>
             `,
           }
           const transporter = await createTransporter();
@@ -167,12 +175,31 @@ exports.forgetPassword = async(req, res, next) => {
             }
           })
 
-          transporter.sendMail(data, function(error, body) {
+        transporter.sendMail(data, function(error, body) {
             if (error) {
-              return res.status(400).json({error: error.message})
+            return res.status(400).json({error: error.message})
             }
             return res.status(200).json({message: 'Email has been sent, please follow the instructions'})
-          })
+        })
+
+
+        //   user.updateOne({resetLink: token}, (err, token)=>{
+        //     if(err){
+        //         console.log("could not set the resetlink")
+        //         res.status(400).json({
+        //             status: "failed",
+        //             message: "could not set the resetlink"
+        //         })
+        //     }else{
+                // transporter.sendMail(data, function(error, body) {
+                //     if (error) {
+                //       return res.status(400).json({error: error.message})
+                //     }
+                //     return res.status(200).json({message: 'Email has been sent, please follow the instructions'})
+                //   })
+        //     }
+        //   })
+
 
 
     } catch (error) {
@@ -183,3 +210,41 @@ exports.forgetPassword = async(req, res, next) => {
 
 
 // creating update password
+exports.updatePassword = async (req, res, next)=>{
+    const {token} = req.params
+    console.log(token);
+    const {password} = req.body
+    if (token) {
+        jwt.verify(token, 'secretkey321', async function(error, decodedData) {
+            if (error) {
+                return res.status(400).json({error: 'Incorrect token or it is expired'})
+            }
+            const user = await User.findOne({resetLink: token})
+            if (!user) {
+                return res.status(400).json({error: 'User with this token does not exist'})
+            }
+            const hashedPassword = await bcrypt.hash(password, 12);
+
+            user.password = hashedPassword
+            user.save()
+            return res.status(200).json({message: 'Email has been sent, please follow the instructions'})
+        // User.findOne({resetLink: token}, async (err, user) => {
+        //     if (err || !user) {
+        //     return res.status(400).json({error: 'User with this token does not exist'})
+        //     }
+        //     const hashedPassword = await bcrypt.hash(password, 12);
+
+        //     user.password = hashedPassword
+        //     user.save((err, result) => {
+        //     if (err) {
+        //         return res.status(400).json({error: 'Reset Password Error'})
+        //     } else {
+        //         return res.status(200).json({message:'Your password has been changed'})
+        //     }
+        //     })
+        // })
+        })
+    } else {
+        return res.status(401).json({error: "Authentication Error"})
+    }    
+}

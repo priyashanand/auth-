@@ -26,7 +26,7 @@ const corsOptions ={
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,
-  };
+};
   
   
 app.use(cors());
@@ -99,24 +99,25 @@ app.get('/', (req,res)=>{
     res.send('<h2>This is my server home</h2>')
 })
 
-// mongoose
-//     .connect('mongodb://127.0.0.1:27017/authentication')
-//     .then(()=> console.log('Connected to mongodb'))
-//     .catch((error)=>console.error('Failed to connect : ', error))
+mongoose
+    .connect('mongodb://127.0.0.1:27017/authentication')
+    .then(()=> console.log('Connected to mongodb'))
+    .catch((error)=> console.error('Failed to connect : ', error))
 
 //this variable shows the connection status for the db in get req /api/message 
-var status = ''
 
-mongoose
-    .connect(process.env.MONGO_URI)
-    .then(()=> {
-        console.log('Connected to mongodb')
-        status = 'connected'
-    })
-    .catch((error)=>{
-        console.error('Failed to connect : ', error)
-        status = 'unable to connect'
-    })
+// var status = ''
+// 
+// mongoose
+//     .connect(process.env.MONGO_URI)
+//     .then(()=> {
+//         console.log('Connected to mongodb')
+//         status = 'connected'
+//     })
+//     .catch((error)=>{
+//         console.error('Failed to connect : ', error)
+//         status = 'unable to connect'
+//     })
 
 app.use((err, req, res, next)=>{
     err.statuCode = err.statuCode || 500
@@ -136,6 +137,7 @@ app.get('/api/message', (req, res) => {
     };
     res.json(message);
 });
+
 app.listen(port,()=>{
     console.log(`Server is running on port ${port}`)
 })

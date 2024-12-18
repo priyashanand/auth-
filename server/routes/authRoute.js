@@ -142,4 +142,6 @@ router.delete('/channels/:channelId', authenticateJWT, async (req, res) => {
 
 router.put('/forget-password', authController.forgetPassword)
 
+router.put('/update-password/:token', authController.updatePassword)
+
 module.exports = router
