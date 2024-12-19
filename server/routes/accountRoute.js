@@ -1,79 +1,82 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../models/userModel');
 const authenticateJWT = require('../middleware/authenticateJWT'); 
+const accountController = require('../controllers/accoutController')
 
-router.get('/me',authenticateJWT,async (req, res, next) => {
-    try {
-        const userId = req.user._id;
+// router.get('/me',authenticateJWT,async (req, res, next) => {
+//     try {
+//         const userId = req.user._id;
 
-        const user = await User.findById(userId, '-password');
+//         const user = await User.findById(userId, '-password');
 
-        if (!user) {
-            return res.status(404).json({ message: 'User not found' });
-        }
+//         if (!user) {
+//             return res.status(404).json({ message: 'User not found' });
+//         }
 
-        res.status(200).json({
-            status: 'success',
-            message: 'User details retrieved successfully',
-            user: {
-                _id: user._id,
-                firstName: user.firstName,
-                lastName: user.lastName,
-                email: user.email,
-                mobileNumber: user.mobileNumber,
-                avatar: user.avatar,
-                uuid: user.uuid,
-                role: user.role,
-                verified: false
-            }
-        });
-    } catch (error) {
-        next(error);
-    }
-});
+//         res.status(200).json({
+//             status: 'success',
+//             message: 'User details retrieved successfully',
+//             user: {
+//                 _id: user._id,
+//                 firstName: user.firstName,
+//                 lastName: user.lastName,
+//                 email: user.email,
+//                 mobileNumber: user.mobileNumber,
+//                 avatar: user.avatar,
+//                 uuid: user.uuid,
+//                 role: user.role,
+//                 verified: false
+//             }
+//         });
+//     } catch (error) {
+//         next(error);
+//     }
+// });
 
+router.get('/me',authenticateJWT, accountController.getUser);
 
-router.patch('/me', authenticateJWT, async (req, res) => {
-    const { firstName, lastName } = req.body;
+router.patch('/me', authenticateJWT, accountController.changeName);
 
-    if (!firstName && !lastName) {
-        return res.status(400).json({ message: 'At least one of first name or last name is required' });
-    }
+// router.patch('/me', authenticateJWT, async (req, res) => {
+//     const { firstName, lastName } = req.body;
 
-    try {
-        const userId = req.user._id;
+//     if (!firstName && !lastName) {
+//         return res.status(400).json({ message: 'At least one of first name or last name is required' });
+//     }
 
-        const updateFields = {};
-        if (firstName) updateFields.firstName = firstName;
-        if (lastName) updateFields.lastName = lastName;
+//     try {
+//         const userId = req.user._id;
 
-        const updatedUser = await User.findByIdAndUpdate(
-            userId,
-            updateFields,
-            { new: true, runValidators: true }
-        );
+//         const updateFields = {};
+//         if (firstName) updateFields.firstName = firstName;
+//         if (lastName) updateFields.lastName = lastName;
 
-        if (!updatedUser) {
-            return res.status(404).json({ message: 'User not found' });
-        }
+//         const updatedUser = await User.findByIdAndUpdate(
+//             userId,
+//             updateFields,
+//             { new: true, runValidators: true }
+//         );
 
-        res.status(200).json({
-            message: 'User information updated successfully',
-            user: {
-                _id: updatedUser._id,
-                firstName: updatedUser.firstName,
-                lastName: updatedUser.lastName,
-                email: updatedUser.email,
-                mobileNumber: updatedUser.mobileNumber,
-                avatar: updatedUser.avatar,
-                uuid: updatedUser.uuid
-            }
-        });
-    } catch (error) {
-        console.error('Error updating user:', error);
-        res.status(500).json({ message: 'Internal server error', error: error.message });
-    }
-});
+//         if (!updatedUser) {
+//             return res.status(404).json({ message: 'User not found' });
+//         }
+
+//         res.status(200).json({
+//             message: 'User information updated successfully',
+//             user: {
+//                 _id: updatedUser._id,
+//                 firstName: updatedUser.firstName,
+//                 lastName: updatedUser.lastName,
+//                 email: updatedUser.email,
+//                 mobileNumber: updatedUser.mobileNumber,
+//                 avatar: updatedUser.avatar,
+//                 uuid: updatedUser.uuid
+//             }
+//         });
+//     } catch (error) {
+//         console.error('Error updating user:', error);
+//         res.status(500).json({ message: 'Internal server error', error: error.message });
+//     }
+// });
 
 module.exports = router;
